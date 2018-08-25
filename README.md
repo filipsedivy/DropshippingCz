@@ -23,7 +23,28 @@ Usage
 -----
 
 ```php
-$token = 'token';
-$apiConfig = new FilipSedivy\DropshippingCz\Model\ApiConfig($token);
+$apiConfig = new FilipSedivy\DropshippingCz\Model\ApiConfig('token');
 $client = new FilipSedivy\DropshippingCz\Client($apiConfig);
+```
+
+
+### Services
+
+```php
+$client->getEshops()
+$client->getProducts()
+$client->getPayments()
+$client->getDeliveries()
+$client->getOrder()
+$client->getOrders()
+```
+
+Example
+-------
+
+### Get list of eshops
+
+```php
+$stringList = $client->getEshops()->getList()->getContent();
+$arrayList = $client->getEshops()->getList()->getJson();
 ```
