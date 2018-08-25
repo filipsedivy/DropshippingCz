@@ -10,7 +10,7 @@ This is a library that maps the [Dropshipping.cz API](https://client.api.dropshi
 Installation
 ------------
 
-The recommended way to is via [Composer](https://packagist.org/packages/filipsedivy/ntp):
+The recommended way to is via [Composer](https://packagist.org/packages/filipsedivy/dropshippingcz):
 
 ```
 composer require filipsedivy/dropshippingcz
