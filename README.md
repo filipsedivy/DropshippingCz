@@ -75,6 +75,7 @@ TODO
 
 - **HttpResponse**
     - MultiLevel mapper / create sub entity, collection
+    - Map POST response
 - **Services/Orders**
     - Complete sendOrder(...) method
 - **Entity/Services/...**
