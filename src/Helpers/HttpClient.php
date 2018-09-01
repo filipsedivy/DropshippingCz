@@ -3,6 +3,7 @@
 namespace FilipSedivy\DropshippingCz\Helpers;
 
 use FilipSedivy\DropshippingCz\Model\ApiConfig;
+use FilipSedivy\DropshippingCz\Application;
 use GuzzleHttp;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\StreamInterface;
@@ -25,28 +26,24 @@ class HttpClient
     }
 
     /**
-     * @param string $method
-     *
-     * @return HttpResponse
+     * @param string $url
      *
      * @throws GuzzleHttp\Exception\GuzzleException
      */
-    public function get(string $method): HttpResponse
+    public function get(string $url)
     {
-        $response = $this->guzzle->request('GET', $method);
-        return new HttpResponse($response);
+        $response = $this->guzzle->request('GET', $url);
+        return new HttpResponse($response, 'GET', $url);
     }
 
 
     /**
-     * @param string                               $method
+     * @param string                               $url
      * @param string|null|resource|StreamInterface $body
-     *
-     * @return HttpResponse
      *
      * @throws GuzzleHttp\Exception\GuzzleException
      */
-    public function post(string $method, $body = null): HttpResponse
+    public function post(string $url, $body = null)
     {
         $options = array();
 
@@ -55,7 +52,7 @@ class HttpClient
             $options[RequestOptions::BODY] = $body;
         }
 
-        $response = $this->guzzle->request('POST', $method, $options);
-        return new HttpResponse($response);
+        $response = $this->guzzle->request('POST', $url, $options);
+        return new HttpResponse($response, 'POST', $url);
     }
 }
