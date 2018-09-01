@@ -2,8 +2,10 @@
 
 namespace FilipSedivy\DropshippingCz\Helpers;
 
+use FilipSedivy\DropshippingCz\Exceptions\Application\FatalErrorException;
 use FilipSedivy\DropshippingCz\Exceptions\Application\UndefinedClassException;
 use FilipSedivy\DropshippingCz\Exceptions\Application\UndefinedClassParameterException;
+use FilipSedivy\DropshippingCz\Exceptions\HttpClient\HttpClientErrorException;
 use Psr\Http\Message\ResponseInterface;
 use Nette\Utils\Json;
 
@@ -20,6 +22,11 @@ class HttpResponse
         $this->response = $response;
         $this->method = $method;
         $this->url = $url;
+
+        if ($response->getStatusCode() === 400)
+        {
+            throw new HttpClientErrorException($response->getBody()->getContents());
+        }
     }
 
 
@@ -58,9 +65,15 @@ class HttpResponse
      * @return mixed
      *
      * @throws \Nette\Utils\JsonException
+     * @throws FatalErrorException
      */
     public function toArrayData()
     {
+        if (strtolower($this->method) === 'post')
+        {
+            throw new FatalErrorException('You can not get array data with POST requests. Use toArray() method');
+        }
+
         return $this->toArray(0)->data;
     }
 
@@ -70,6 +83,7 @@ class HttpResponse
      *
      * @throws UndefinedClassParameterException
      * @throws UndefinedClassException
+     * @throws FatalErrorException
      * @throws \ReflectionException
      * @throws \Nette\Utils\JsonException
      */
@@ -83,6 +97,11 @@ class HttpResponse
         if ($this->url === '')
         {
             throw new UndefinedClassParameterException('Parameter url is not set');
+        }
+
+        if (strtolower($this->method) === 'post')
+        {
+            throw new FatalErrorException('You can not create collections with POST requests. Use toArray() method');
         }
 
         preg_match('/^(?<method>[a-zA-Z\/\-]+)/', $this->url, $matches);
