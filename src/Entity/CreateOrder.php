@@ -138,7 +138,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -157,7 +157,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceFirstname(): string
+    public function getInvoiceFirstname(): ?string
     {
         return $this->invoice_firstname;
     }
@@ -176,7 +176,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceSurname(): string
+    public function getInvoiceSurname(): ?string
     {
         return $this->invoice_surname;
     }
@@ -195,7 +195,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceStreet(): string
+    public function getInvoiceStreet(): ?string
     {
         return $this->invoice_street;
     }
@@ -214,7 +214,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceCity(): string
+    public function getInvoiceCity(): ?string
     {
         return $this->invoice_city;
     }
@@ -233,7 +233,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceZipcode(): string
+    public function getInvoiceZipcode(): ?string
     {
         return $this->invoice_zipcode;
     }
@@ -252,7 +252,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceCompany(): string
+    public function getInvoiceCompany(): ?string
     {
         return $this->invoice_company;
     }
@@ -271,7 +271,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceIco(): string
+    public function getInvoiceIco(): ?string
     {
         return $this->invoice_ico;
     }
@@ -290,7 +290,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getInvoiceDic(): string
+    public function getInvoiceDic(): ?string
     {
         return $this->invoice_dic;
     }
@@ -309,7 +309,7 @@ class CreateOrder
     /**
      * @return int
      */
-    public function getContactLikeInvoice(): int
+    public function getContactLikeInvoice(): ?int
     {
         return $this->contact_like_invoice;
     }
@@ -328,7 +328,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactFirstname(): string
+    public function getContactFirstname(): ?string
     {
         return $this->contact_firstname;
     }
@@ -347,7 +347,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactSurname(): string
+    public function getContactSurname(): ?string
     {
         return $this->contact_surname;
     }
@@ -366,7 +366,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactStreet(): string
+    public function getContactStreet(): ?string
     {
         return $this->contact_street;
     }
@@ -385,7 +385,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactCity(): string
+    public function getContactCity(): ?string
     {
         return $this->contact_city;
     }
@@ -404,7 +404,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactZipcode(): string
+    public function getContactZipcode(): ?string
     {
         return $this->contact_zipcode;
     }
@@ -423,7 +423,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactCompany(): string
+    public function getContactCompany(): ?string
     {
         return $this->contact_company;
     }
@@ -442,7 +442,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactIco(): string
+    public function getContactIco(): ?string
     {
         return $this->contact_ico;
     }
@@ -461,7 +461,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getContactDic(): string
+    public function getContactDic(): ?string
     {
         return $this->contact_dic;
     }
@@ -480,7 +480,7 @@ class CreateOrder
     /**
      * @return string
      */
-    public function getNote(): string
+    public function getNote(): ?string
     {
         return $this->note;
     }
@@ -537,7 +537,7 @@ class CreateOrder
     /**
      * @return int
      */
-    public function getDeliveryId(): int
+    public function getDeliveryId(): ?int
     {
         return $this->delivery_id;
     }
@@ -556,7 +556,7 @@ class CreateOrder
     /**
      * @return float
      */
-    public function getDeliveryPriceVat(): float
+    public function getDeliveryPriceVat(): ?float
     {
         return $this->delivery_price_vat;
     }
@@ -575,7 +575,7 @@ class CreateOrder
     /**
      * @return int|null
      */
-    public function getDeliveryPlaceId(): int
+    public function getDeliveryPlaceId(): ?int
     {
         return $this->delivery_place_id;
     }
@@ -594,7 +594,7 @@ class CreateOrder
     /**
      * @return float
      */
-    public function getDeliveryPlaceExtId(): float
+    public function getDeliveryPlaceExtId(): ?float
     {
         return $this->delivery_place_ext_id;
     }
@@ -613,7 +613,7 @@ class CreateOrder
     /**
      * @return array
      */
-    public function getBasket(): array
+    public function getBasket(): ?array
     {
         return $this->basket;
     }
@@ -632,7 +632,7 @@ class CreateOrder
     /**
      * @return int
      */
-    public function getTest(): int
+    public function getTest(): ?int
     {
         return $this->test;
     }
@@ -658,6 +658,44 @@ class CreateOrder
     public function toArray(): array
     {
         $output = array();
+
+        $output['eshop_id'] = $this->getEshopId();
+        $output['email'] = $this->getEmail();
+        $output['phone'] = $this->getPhone();
+        $output['invoice_firstname'] = $this->getInvoiceFirstname();
+        $output['invoice_surname'] = $this->getInvoiceSurname();
+        $output['invoice_street'] = $this->getInvoiceStreet();
+        $output['invoice_city'] = $this->getInvoiceCity();
+        $output['invoice_zipcode'] = $this->getInvoiceZipcode();
+        $output['invoice_company'] = $this->getInvoiceCompany();
+        $output['invoice_ico'] = $this->getInvoiceIco();
+        $output['invoice_dic'] = $this->getInvoiceDic();
+        $output['contact_like_invoice'] = $this->getContactLikeInvoice();
+        $output['contact_firstname'] = $this->getContactFirstname();
+        $output['contact_surname'] = $this->getContactSurname();
+        $output['contact_street'] = $this->getContactStreet();
+        $output['contact_city'] = $this->getContactCity();
+        $output['contact_zipcode'] = $this->getContactZipcode();
+        $output['contact_company'] = $this->getContactCompany();
+        $output['contact_ico'] = $this->getContactIco();
+        $output['contact_dic'] = $this->getContactDic();
+        $output['note'] = $this->getNote();
+        $output['payment_id'] = $this->getPaymentId();
+        $output['payment_price_vat'] = $this->getPaymentPriceVat();
+        $output['delivery_id'] = $this->getDeliveryId();
+        $output['delivery_price_vat'] = $this->getDeliveryPriceVat();
+        $output['delivery_place_id'] = $this->getDeliveryPlaceId();
+        $output['delivery_place_ext_id'] = $this->getDeliveryPlaceExtId();
+        $output['basket'] = $this->getBasket();
+        $output['test'] = $this->getTest();
+
+        foreach ($output as $item => $value)
+        {
+            if ($value === null || $value === [])
+            {
+                unset($output[$item]);
+            }
+        }
 
         return $output;
     }
