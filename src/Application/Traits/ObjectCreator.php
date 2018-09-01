@@ -1,6 +1,6 @@
 <?php
 
-namespace FilipSedivy\DropshippingCz\Application\Tratis;
+namespace FilipSedivy\DropshippingCz\Application\Traits;
 
 use FilipSedivy\DropshippingCz\Exceptions\Application;
 use FilipSedivy\DropshippingCz\Helpers;
