@@ -85,8 +85,6 @@ class HttpResponse
             throw new UndefinedClassParameterException('Parameter url is not set');
         }
 
-        dump($this->url);
-
         preg_match('/^(?<method>[a-zA-Z\/\-]+)/', $this->url, $matches);
 
         $entityClass = $this->createEntityClassName($matches['method']);
