@@ -2,6 +2,7 @@
 
 namespace FilipSedivy\DropshippingCz\Services;
 
+use FilipSedivy\DropshippingCz\Entity\CreateOrder;
 use FilipSedivy\DropshippingCz\Helpers\HttpClient;
 use FilipSedivy\DropshippingCz\Helpers\HttpResponse;
 
@@ -39,5 +40,11 @@ class Orders implements IService
         ]);
 
         return $this->httpClient->get('orders?' . $query);
+    }
+
+
+    public function sendOrder(CreateOrder $order)
+    {
+        return $this->httpClient->post('orders', $order->toArray());
     }
 }
