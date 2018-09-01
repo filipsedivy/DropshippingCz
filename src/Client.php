@@ -2,165 +2,59 @@
 
 namespace FilipSedivy\DropshippingCz;
 
-use Exception;
-use FilipSedivy\DropshippingCz\Helpers\HttpClient;
-use FilipSedivy\DropshippingCz\Model\ApiConfig;
-use FilipSedivy\DropshippingCz\Services\Deliveries;
-use FilipSedivy\DropshippingCz\Services\Eshops;
-use FilipSedivy\DropshippingCz\Services\Order;
-use FilipSedivy\DropshippingCz\Services\Orders;
-use FilipSedivy\DropshippingCz\Services\Payments;
-use FilipSedivy\DropshippingCz\Services\Products;
+use FilipSedivy\DropshippingCz\Application\Traits;
+use FilipSedivy\DropshippingCz\Exceptions\Application;
+use FilipSedivy\DropshippingCz\Helpers;
+use FilipSedivy\DropshippingCz\Model;
+use FilipSedivy\DropshippingCz\Services;
 
+
+/**
+ * @method Services\Eshops getEshops()
+ * @method Services\Products getProducts()
+ * @method Services\Payments getPayments()
+ * @method Services\Deliveries getDeliveries()
+ * @method Services\Order getOrder()
+ * @method Services\Orders getOrders()
+ */
 class Client
 {
+    use Traits\ObjectCreator;
+
     /** @var array */
     private $services = [];
 
-    /** @var HttpClient */
+    /** @var Helpers\HttpClient */
     private $httpClient;
 
-    /**
-     * @param ApiConfig $apiConfig
-     */
-    public function __construct(ApiConfig $apiConfig)
-    {
-        $this->httpClient = new HttpClient($apiConfig);
-    }
 
     /**
-     * @return Eshops|object
-     *
-     * @throws Exception
-     * @throws \ReflectionException
+     * @param Model\ApiConfig $apiConfig
      */
-    public function getEshops(): Eshops
+    public function __construct(Model\ApiConfig $apiConfig)
     {
-        return $this->createObject('Eshops');
+        $this->httpClient = new Helpers\HttpClient($apiConfig);
     }
 
 
     /**
-     * @return Products|object
+     * @param string $name
+     * @param array  $arguments
      *
+     * @return null|object
+     *
+     * @throws Application\UndefinedClassException
+     * @throws Application\UndefinedMethodException
      * @throws \ReflectionException
      */
-    public function getProducts(): Products
+    public function __call(string $name, array $arguments)
     {
-        return $this->createObject('Products');
-    }
-
-
-    /**
-     * @return Payments|object
-     *
-     * @throws \ReflectionException
-     */
-    public function getPayments(): Payments
-    {
-        return $this->createObject('Payments');
-    }
-
-
-    /**
-     * @return Deliveries|object
-     *
-     * @throws \ReflectionException
-     */
-    public function getDeliveries(): Deliveries
-    {
-        return $this->createObject('Deliveries');
-    }
-
-
-    /**
-     * @return Order|object
-     *
-     * @throws \ReflectionException
-     */
-    public function getOrder(): Order
-    {
-        return $this->createObject('Order');
-    }
-
-
-    /**
-     * @return Orders|object
-     *
-     * @throws \ReflectionException
-     */
-    public function getOrders(): Orders
-    {
-        return $this->createObject('Orders');
-    }
-
-
-    /**
-     * @param string $class
-     * @param string $baseNamespace
-     *
-     * @return object
-     *
-     * @throws Exception
-     * @throws \ReflectionException
-     */
-    protected function createObject(string $class, string $baseNamespace = 'FilipSedivy\DropshippingCz\Services')
-    {
-        $classMap = $class;
-
-        if ($baseNamespace !== null)
+        // Detect service
+        if (preg_match('/^(get)(?<method>[a-zA-Z]+)$/', $name, $matches))
         {
-            $classMap = sprintf('%s\\%s', rtrim($baseNamespace, '\\'), $class);
+            return $this->tryCreateService($matches['method']);
         }
 
-        if (array_key_exists($classMap, $this->services))
-        {
-            $object = $this->services[$classMap];
-        }
-        else
-        {
-            $object = null;
-
-            if (!class_exists($classMap))
-            {
-                throw new \Exception('Class \'' . $classMap . '\' not exists');
-            }
-
-            $reflectionClass = new \ReflectionClass($classMap);
-
-            $interfaceNames = array_values($reflectionClass->getInterfaceNames());
-            static $interfaceName = 'FilipSedivy\DropshippingCz\Services\IService';
-
-            if (!\in_array($interfaceName, $interfaceNames, true))
-            {
-                throw new Exception('Service has not IService interface ' . $interfaceName);
-            }
-
-            $args = [];
-
-            foreach ($reflectionClass->getConstructor()->getParameters() as $reflectionParameter)
-            {
-                $reflectionParameterType = $reflectionParameter->getType();
-                if ($reflectionParameterType instanceof \ReflectionType)
-                {
-                    switch ($reflectionParameterType->getName())
-                    {
-                        case HttpClient::class:
-                            $args[] = $this->httpClient;
-                            break;
-
-                        default:
-                            throw new Exception('Parameter \'' . $reflectionParameterType->getName() . '\' not found');
-                            break;
-                    }
-                }
-            }
-
-            $object = $reflectionClass->newInstanceArgs($args);
-            $this->services[$classMap] = $object;
-        }
-
-        return $object;
+        throw new Application\UndefinedMethodException($name);
     }
-
 }
